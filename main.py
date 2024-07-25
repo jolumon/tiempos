@@ -6,7 +6,7 @@ from qt_material import apply_stylesheet
 
 
 class VentanaPrincipal(QMainWindow, Ui_MainWindow):
-    """Ventana"""
+    """Ventana principal"""
 
     def __init__(self):
         super().__init__()
