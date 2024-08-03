@@ -1,6 +1,6 @@
 from PySide6.QtWidgets import QApplication, QCheckBox, QLabel, QComboBox, QPushButton
 from PySide6.QtCore import Qt
-from ui_main3 import QMainWindow, Ui_MainWindow
+from ui_main4 import QMainWindow, Ui_MainWindow
 import sys
 from qt_material import apply_stylesheet
 
@@ -26,20 +26,24 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.le_operarios_encajado_prod.hide()
         self.lbl_operarios_pack_prod.hide()
         self.le_operarios_pack_prod.hide()
+        self.lbl_operarios_limp_fab.hide()
+        self.le_operarios_limp_fab.hide()
         self.lbl_operarios_sec.hide()
         self.le_operarios_sec.hide()
+        self.lbl_operarios_env.hide()
+        self.le_operarios_env.hide()
         
+
         # Listas/Diccionario para los comboBox
-        #diccionario={"tipo_XXXXX":horas_limpieza}
-        
-        self.tipos_fabricacion={"Emulsión": 4, "Gel": 3, "Solución": 2}
-        self.tipos_vaciado=["Bomba", "Manual"]
-        self.tipos_envases=["Tubos", "Tarros", "Frascos"]
-        self.tipos_envasado=["Manual", "Máquina", "Automático"]
-        self.tipos_loteado=["Automático", "Manual"]
-        self.tipos_etiquetado=["Automático", "Manual"]
-        self.tipos_encajado_tubos=["Sin separadores", "Con separadores"]
-        
+        # diccionario={"tipo_XXXXX":minutos_limpieza}
+
+        self.tipos_fabricacion = {"Emulsión": 240, "Gel": 180, "Solución": 120}
+        self.tipos_vaciado = ["Bomba", "Manual"]
+        self.tipos_envases = ["Tubos", "Tarros", "Frascos"]
+        self.tipos_envasado = ["Manual", "Máquina", "Automático"]
+        self.tipos_loteado = ["Automático", "Manual"]
+        self.tipos_etiquetado = ["Automático", "Manual"]
+        self.tipos_encajado_tubos = ["Sin separadores", "Con separadores"]
 
         # Asignación de datos a los comboBox de la aplicación
         self.cmb_fabricacion_fab.addItems(list(self.tipos_fabricacion.keys()))
@@ -62,7 +66,9 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.cb_etiq_idioma_sec.stateChanged.connect(self.etiquetado_idioma)
         self.cb_encajado_sec.stateChanged.connect(self.encajado)
         self.cb_pack_sec.stateChanged.connect(self.pack)
-        self.cb_limpieza_sec.stateChanged.connect(self.limpieza_sec)
+        self.cb_limpieza_fab.stateChanged.connect(self.limpieza_fab)
+        self.cb_limpieza_sec.stateChanged.connect(self.limpieza_asec)
+        self.cb_limpieza_env.stateChanged.connect(self.limpieza_env)
 
         self.btn_calcular_fab.clicked.connect(self.total_fabricacion)
 
@@ -265,7 +271,35 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.lbl_operarios_pack_prod.show()
         self.le_operarios_pack_prod.show()
 
-    def limpieza_sec(self, estado):
+    def limpieza_fab(self, estado):
+
+        if estado == 2:
+
+            self.lbl_operarios_limp_fab.show()
+            self.le_operarios_limp_fab.show()
+            self.le_operarios_limp_fab.setFocus()
+            # self.cmb_etiquetado_prod_sec.currentIndexChanged.connect(self.encajado_activado)
+
+        else:
+            self.lbl_operarios_limp_fab.hide()
+            self.le_operarios_limp_fab.hide()
+
+
+    def limpieza_env(self, estado):
+
+        if estado == 2:
+
+            self.lbl_operarios_env.show()
+            self.le_operarios_env.show()
+            self.le_operarios_env.setFocus()
+            # self.cmb_etiquetado_prod_sec.currentIndexChanged.connect(self.encajado_activado)
+
+        else:
+            self.lbl_operarios_env.hide()
+            self.le_operarios_env.hide()
+
+
+    def limpieza_asec(self, estado):
 
         if estado == 2:
 
@@ -277,6 +311,20 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         else:
             self.lbl_operarios_sec.hide()
             self.le_operarios_sec.hide()
+
+    def limpieza_sec2(self, estado):
+
+        if estado == 2:
+
+            self.lbl_operarios_encajado_prod.show()
+            self.le_operarios_encajado_prod.show()
+            self.le_operarios_encajado_prod.setFocus()
+            # self.cmb_etiquetado_prod_sec.currentIndexChanged.connect(self.encajado_activado)
+
+        else:
+            self.lbl_operarios_encajado_prod.hide()
+            self.le_operarios_encajado_prod.hide()
+
 
     # FABRICACIÓN
     def calcular_pesada(self):
@@ -294,7 +342,6 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         return tiempo_pesada
 
     def calcular_fabricacion(self):
-        fabricacion = {"Emulsión": 4, "Gel": 3, "Solución": 2}
 
         # Comprobar que la cantidad es válida
         cantidad_texto = self.le_cantidad_fab.text()
@@ -316,9 +363,9 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
 
     def calcular_vaciado(self):
         cantidad_fabricada = int(self.le_cantidad_fab.text())
-        if cantidad_fabricada > 0 and cantidad_fabricada <= 25:
+        if 0 < cantidad_fabricada <= 25:
             tiempo_vac = 15
-        elif cantidad_fabricada > 25 and cantidad_fabricada <= 200:
+        elif 25 < cantidad_fabricada <= 200:
             tiempo_vac = 25
         else:
             tiempo_vac = 45
@@ -326,14 +373,41 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         return tiempo_vac
 
     def calcular_limpieza_fab(self):
-        
-        limpieza_reactor={"P59":10,"P19":25,"P20":35,"P16":15,"P17":15}
-        tipo_fabricacion = self.cmb_fabricacion_fab.currentText()
-        
-        tiempo_limp = self.tipos_fabricacion[tipo_fabricacion]
 
-        
-        return tiempo_limp
+        cantidad_fabricada = int(self.le_cantidad_fab.text())
+        tipo_producto = self.cmb_fabricacion_fab.currentText()
+
+        # Diccionario que mapea los reactores con sus capacidades máximas
+        reactores = {
+            "P055": (0, 25),
+            "P019": (50, 200),
+            "P020": (200, 400),
+            "P016": (0, 200),  # Solo para Solución
+            "P017": (200, 500),  # Solo para Solución
+        }
+
+        # Diccionario que mapea los tipos de productos con sus tiempos de limpieza
+        tiempos_limpieza = {
+            "Emulsión": {"P055": 30, "P019": 45, "P020": 60},
+            "Solución": {"P016": 20, "P017": 30, "P019": 45},
+            "Gel": {"P055": 45, "P019": 60, "P020": 75},
+        }
+
+        # Seleccionar el reactor adecuado según la cantidad fabricada
+        for reactor, capacidad in reactores.items():
+            if capacidad[0] <= cantidad_fabricada <= capacidad[1]:
+                if tipo_producto == "Solución" and reactor not in ["P016", "P017"]:
+                    continue
+                break
+        else:
+            raise ValueError(
+                "No se encontró un reactor adecuado para la cantidad fabricada"
+            )
+
+        # Calcular el tiempo de limpieza según el reactor y el tipo de producto
+        tiempo_limpieza = tiempos_limpieza[tipo_producto][reactor]
+
+        return tiempo_limpieza
 
     def total_fabricacion(self):
 
@@ -347,7 +421,10 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
 
     # ACONDICIONAMIENTO PRIMARIO
     def calcular_prep_env(self):
-        pass
+
+        if self.cmb_prep_env.currentIndex == 2:
+
+            pass
 
     def calcular_env(self):
         pass
@@ -357,16 +434,26 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
 
     # ACONDICIONAMIENTO SECUNDARIO
     def calcular_loteado_prod_sec(self):
-        
+
         # si loteado automatico: tiempo se incluye en el envasado
         # si loteado es manual:preparacion maquina+loteado
-        
+
         pass
 
     def calcular_etiquetado_prod_sec(self):
         pass
 
+    def calcular_encajado_prod_esc(self):
+        pass
+
+    def calcular_eti_idioma_prod_esc(self):
+        pass
+
     def calcular_pack_sec(self):
+
+        pass
+
+    def limpieza_sec(self):
         pass
 
 
