@@ -32,7 +32,6 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.le_operarios_sec.hide()
         self.lbl_operarios_env.hide()
         self.le_operarios_env.hide()
-        
 
         # Listas/Diccionario para los comboBox
         # diccionario={"tipo_XXXXX":minutos_limpieza}
@@ -284,7 +283,6 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
             self.lbl_operarios_limp_fab.hide()
             self.le_operarios_limp_fab.hide()
 
-
     def limpieza_env(self, estado):
 
         if estado == 2:
@@ -297,7 +295,6 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         else:
             self.lbl_operarios_env.hide()
             self.le_operarios_env.hide()
-
 
     def limpieza_asec(self, estado):
 
@@ -325,19 +322,23 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
             self.lbl_operarios_encajado_prod.hide()
             self.le_operarios_encajado_prod.hide()
 
-
     # FABRICACIÓN
+
     def calcular_pesada(self):
 
-        componentes = self.le_pesada_fab.text()
-        if not componentes:
-            raise ValueError("La cantidad no puede estar vacia")
-        try:
-            componentes = int(self.le_pesada_fab.text())
-            tiempo_pesada = componentes * 5
+        if self.cb_pesada_fab.isChecked():
+            componentes = self.le_pesada_fab.text()
+            if not componentes:
+                raise ValueError("La cantidad no puede estar vacia")
+            try:
+                componentes = int(self.le_pesada_fab.text())
+                tiempo_pesada = componentes * 5
 
-        except ValueError:
-            raise ValueError("La cantidad debe ser un número entero")
+            except ValueError:
+                raise ValueError("La cantidad debe ser un número entero")
+
+        else:
+            tiempo_pesada = 0
 
         return tiempo_pesada
 
