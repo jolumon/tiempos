@@ -5,6 +5,14 @@
   <property name="enabled">
    <bool>true</bool>
   </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1120</width>
+    <height>609</height>
+   </rect>
+  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
@@ -32,6 +40,20 @@
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
           <layout class="QFormLayout" name="formLayout_2">
+           <item row="0" column="0">
+            <widget class="QLabel" name="lbl_cantidad_fab">
+             <property name="text">
+              <string>Cantidad</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLineEdit" name="le_cantidad_fab">
+             <property name="placeholderText">
+              <string>kg de fabricación</string>
+             </property>
+            </widget>
+           </item>
            <item row="1" column="0">
             <widget class="QCheckBox" name="cb_pesada_fab">
              <property name="text">
@@ -90,16 +112,6 @@
              </property>
             </widget>
            </item>
-           <item row="6" column="0">
-            <widget class="QLabel" name="lbl_operarios_fab">
-             <property name="text">
-              <string>Operarios</string>
-             </property>
-            </widget>
-           </item>
-           <item row="6" column="1">
-            <widget class="QLineEdit" name="le_operarios_fab"/>
-           </item>
            <item row="7" column="0">
             <spacer name="verticalSpacer">
              <property name="orientation">
@@ -119,7 +131,7 @@
            <item row="8" column="0">
             <widget class="QLabel" name="lbl_total_fab">
              <property name="text">
-              <string>Total</string>
+              <string>Total / min</string>
              </property>
             </widget>
            </item>
@@ -130,13 +142,6 @@
              </property>
              <property name="placeholderText">
               <string>minutos</string>
-             </property>
-            </widget>
-           </item>
-           <item row="10" column="1">
-            <widget class="QPushButton" name="btn_calcular_fab">
-             <property name="text">
-              <string>Calcular</string>
              </property>
             </widget>
            </item>
@@ -153,19 +158,22 @@
              </property>
             </spacer>
            </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="lbl_cantidad_fab">
+           <item row="10" column="1">
+            <widget class="QPushButton" name="btn_calcular_fab">
              <property name="text">
-              <string>Cantidad</string>
+              <string>Calcular</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLineEdit" name="le_cantidad_fab">
-             <property name="placeholderText">
-              <string>kg de fabricación</string>
+           <item row="6" column="0">
+            <widget class="QLabel" name="lbl_operarios_limp_fab">
+             <property name="text">
+              <string>Operarios</string>
              </property>
             </widget>
+           </item>
+           <item row="6" column="1">
+            <widget class="QLineEdit" name="le_operarios_limp_fab"/>
            </item>
           </layout>
          </item>
@@ -251,27 +259,20 @@
             </spacer>
            </item>
            <item row="6" column="0">
-            <widget class="Line" name="line_2">
-             <property name="orientation">
-              <enum>Qt::Orientation::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="0">
             <widget class="Line" name="line_4">
              <property name="orientation">
               <enum>Qt::Orientation::Horizontal</enum>
              </property>
             </widget>
            </item>
-           <item row="8" column="0">
+           <item row="7" column="0">
             <widget class="QLabel" name="total_aprimario">
              <property name="text">
               <string>Total</string>
              </property>
             </widget>
            </item>
-           <item row="8" column="1">
+           <item row="7" column="1">
             <widget class="QLineEdit" name="le_total_env">
              <property name="readOnly">
               <bool>true</bool>
@@ -281,7 +282,7 @@
              </property>
             </widget>
            </item>
-           <item row="9" column="1">
+           <item row="8" column="1">
             <spacer name="verticalSpacer_5">
              <property name="orientation">
               <enum>Qt::Orientation::Vertical</enum>
@@ -294,7 +295,7 @@
              </property>
             </spacer>
            </item>
-           <item row="10" column="1">
+           <item row="9" column="1">
             <widget class="QPushButton" name="btn_calcular_env">
              <property name="text">
               <string>Calcular</string>
@@ -332,13 +333,23 @@
             </widget>
            </item>
            <item row="1" column="0">
+            <widget class="QLabel" name="lbl_operarios_loteado_prod">
+             <property name="text">
+              <string>Operarios loteado</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLineEdit" name="le_operarios_loteado_prod"/>
+           </item>
+           <item row="2" column="0">
             <widget class="QCheckBox" name="cb_etiquetado_prod_sec">
              <property name="text">
               <string>Etiquetado producto</string>
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
+           <item row="2" column="1">
             <widget class="QComboBox" name="cmb_etiquetado_prod_sec">
              <property name="enabled">
               <bool>false</bool>
@@ -348,28 +359,48 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="0">
+           <item row="3" column="0">
+            <widget class="QLabel" name="lbl_operarios_etiquetado_prod">
+             <property name="text">
+              <string>Operarios Etiquetado</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLineEdit" name="le_operarios_etiquetado_prod"/>
+           </item>
+           <item row="4" column="0">
             <widget class="QCheckBox" name="cb_encajado_sec">
              <property name="text">
               <string>Encajado</string>
              </property>
             </widget>
            </item>
-           <item row="3" column="0">
+           <item row="6" column="0">
             <widget class="QCheckBox" name="cb_etiq_idioma_sec">
              <property name="text">
               <string>Etiquetado idioma</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="0">
+           <item row="7" column="0">
+            <widget class="QLabel" name="lbl_operarios_idioma_prod">
+             <property name="text">
+              <string>Operarios idioma</string>
+             </property>
+            </widget>
+           </item>
+           <item row="7" column="1">
+            <widget class="QLineEdit" name="le_operarios_etiquetado_idioma"/>
+           </item>
+           <item row="8" column="0">
             <widget class="QCheckBox" name="cb_pack_sec">
              <property name="text">
               <string>Pack</string>
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
+           <item row="8" column="1">
             <widget class="QComboBox" name="cmb_pack_sec">
              <property name="enabled">
               <bool>false</bool>
@@ -379,31 +410,24 @@
              </property>
             </widget>
            </item>
-           <item row="5" column="0">
+           <item row="10" column="0">
             <widget class="QCheckBox" name="cb_limpieza_sec">
              <property name="text">
               <string>Limpieza</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="0">
+           <item row="11" column="0">
             <widget class="QLabel" name="lbl_operarios_sec">
              <property name="text">
-              <string>Operarios</string>
+              <string>Operarios limpieza</string>
              </property>
             </widget>
            </item>
-           <item row="6" column="1">
+           <item row="11" column="1">
             <widget class="QLineEdit" name="le_operarios_sec"/>
            </item>
-           <item row="7" column="0">
-            <widget class="Line" name="line_3">
-             <property name="orientation">
-              <enum>Qt::Orientation::Horizontal</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="7" column="1">
+           <item row="12" column="1">
             <spacer name="verticalSpacer_3">
              <property name="orientation">
               <enum>Qt::Orientation::Vertical</enum>
@@ -414,19 +438,19 @@
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>20</height>
+               <height>30</height>
               </size>
              </property>
             </spacer>
            </item>
-           <item row="8" column="0">
+           <item row="13" column="0">
             <widget class="QLabel" name="lbl_total_sec">
              <property name="text">
               <string>Total</string>
              </property>
             </widget>
            </item>
-           <item row="8" column="1">
+           <item row="13" column="1">
             <widget class="QLineEdit" name="le_total_sec">
              <property name="readOnly">
               <bool>true</bool>
@@ -436,7 +460,7 @@
              </property>
             </widget>
            </item>
-           <item row="9" column="1">
+           <item row="14" column="1">
             <spacer name="verticalSpacer_6">
              <property name="orientation">
               <enum>Qt::Orientation::Vertical</enum>
@@ -444,17 +468,37 @@
              <property name="sizeHint" stdset="0">
               <size>
                <width>20</width>
-               <height>40</height>
+               <height>30</height>
               </size>
              </property>
             </spacer>
            </item>
-           <item row="10" column="1">
+           <item row="15" column="1">
             <widget class="QPushButton" name="btn_calcular_sec">
              <property name="text">
               <string>Calcular</string>
              </property>
             </widget>
+           </item>
+           <item row="9" column="0">
+            <widget class="QLabel" name="lbl_operarios_pack_prod">
+             <property name="text">
+              <string>Operarios packaging</string>
+             </property>
+            </widget>
+           </item>
+           <item row="9" column="1">
+            <widget class="QLineEdit" name="le_operarios_pack_prod"/>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="lbl_operarios_encajado_prod">
+             <property name="text">
+              <string>Operarios encajado</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QLineEdit" name="le_operarios_encajado_prod"/>
            </item>
           </layout>
          </item>
