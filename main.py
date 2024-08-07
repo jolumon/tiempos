@@ -1,6 +1,7 @@
-from PySide6.QtWidgets import QApplication, QCheckBox, QLabel, QComboBox, QPushButton
+from PySide6.QtWidgets import QApplication, QCheckBox, QLabel, QComboBox, QPushButton, QDialog
 from PySide6.QtCore import Qt
-from ui_main4 import QMainWindow, Ui_MainWindow
+from ui_main5 import QMainWindow, Ui_MainWindow
+from auxiliares import VentanaFaltanDatos
 import sys
 from qt_material import apply_stylesheet
 
@@ -32,6 +33,8 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.le_operarios_sec.hide()
         self.lbl_operarios_env.hide()
         self.le_operarios_env.hide()
+        self.lbl_capacidad_env.hide()
+        self.cmb_capacidad.hide()
 
         # Listas/Diccionario para los comboBox
         # diccionario={"tipo_XXXXX":minutos_limpieza}
@@ -43,6 +46,8 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.tipos_loteado = ["Automático", "Manual"]
         self.tipos_etiquetado = ["Automático", "Manual"]
         self.tipos_encajado_tubos = ["Sin separadores", "Con separadores"]
+        self.capacidades = {"Tubos": [5, 10, 15, 75, 100, 200], "Tarros": [
+            50, 250, 300, 500, 1000], "Frascos": [15, 30, 50, 100, 125, 150, 200, 250, 500, 1000]}
 
         # Asignación de datos a los comboBox de la aplicación
         self.cmb_fabricacion_fab.addItems(list(self.tipos_fabricacion.keys()))
@@ -68,8 +73,15 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.cb_limpieza_fab.stateChanged.connect(self.limpieza_fab)
         self.cb_limpieza_sec.stateChanged.connect(self.limpieza_asec)
         self.cb_limpieza_env.stateChanged.connect(self.limpieza_env)
+        self.le_total_fab.textChanged.connect(self.actualizarTotal)
+        self.le_total_env.textChanged.connect(self.actualizarTotal)
+        self.le_total_sec.textChanged.connect(self.actualizarTotal)
 
         self.btn_calcular_fab.clicked.connect(self.total_fabricacion)
+        self.btn_calcular_env.clicked.connect(self.calcular_prep_env)
+
+        self.cmb_prep_env.currentTextChanged.connect(
+            self.actualizar_capacidades)
 
     def reset(self):
         self.le_cantidad_fab.setText("")
@@ -163,9 +175,14 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
     def prep_envasado(self, estado):
         if estado == 2:
             self.cmb_prep_env.setEnabled(True)
+            self.lbl_capacidad_env.show()
+            self.cmb_capacidad.show()
+            # self.cmb_prep_env.setFocus()
 
         else:
             self.cmb_prep_env.setEnabled(False)
+            self.lbl_capacidad_env.hide()
+            self.cmb_capacidad.hide()
 
     def envasado(self, estado):
         if estado == 2:
@@ -377,10 +394,12 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
 
         cantidad_fabricada = int(self.le_cantidad_fab.text())
         tipo_producto = self.cmb_fabricacion_fab.currentText()
+        # numero_operarios_limp= self.
 
         # Diccionario que mapea los reactores con sus capacidades máximas
         reactores = {
             "P055": (0, 25),
+            "Cubo": (25, 50),
             "P019": (50, 200),
             "P020": (200, 400),
             "P016": (0, 200),  # Solo para Solución
@@ -389,9 +408,9 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
 
         # Diccionario que mapea los tipos de productos con sus tiempos de limpieza
         tiempos_limpieza = {
-            "Emulsión": {"P055": 30, "P019": 45, "P020": 60},
-            "Solución": {"P016": 20, "P017": 30, "P019": 45},
-            "Gel": {"P055": 45, "P019": 60, "P020": 75},
+            "Emulsión": {"P055": 30, "P019": 45, "P020": 60, "Cubo": 10},
+            "Solución": {"P016": 20, "P017": 30, "P019": 45, "Cubo": 10},
+            "Gel": {"Cubo": 10, "P055": 45, "P019": 60, "P020": 75},
         }
 
         # Seleccionar el reactor adecuado según la cantidad fabricada
@@ -421,11 +440,34 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.le_total_fab.setText(str(tiempo))
 
     # ACONDICIONAMIENTO PRIMARIO
+
+    def actualizar_capacidades(self, envase):
+
+        # Limpia las opciones actuales del cmb_capacidad
+        self.cmb_capacidad.clear()
+
+        # Agrega las capacidades correspondientes al envase seleccionado
+        if envase in self.capacidades:
+            self.cmb_capacidad.addItems(map(str, self.capacidades[envase]))
+
     def calcular_prep_env(self):
+        # envases = {"Tubos": [5, 10, 15, 75, 100, 200],
+        #            "Tarros": [50, 250, 300, 500],
+        #            "Frascos": [15, 30, 50, 100, 125, 150, 200, 250, 500, 1000]}
+        tipos_envasado = {"Manual": {"Tarros": 40, "Frascos": 40},
+                          "Máquina": {"Tubos": 30, "Tarros": 30, "Frascos": 30},
+                          "Automático": {"Tubos": 120, "Tarros": 35, "Frascos": 35}}
 
-        if self.cmb_prep_env.currentIndex == 2:
+        if self.cb_prep_env.isChecked():
+            envase = self.cmb_prep_env.currentText()
+            tipo_envasado = self.cmb_env.currentText()
 
-            pass
+            if tipo_envasado != "" and envase != "":
+                # Obtener el valor correspondiente al tipo de envasado seleccionado
+                valor_tipo_envasado = tipos_envasado[tipo_envasado][envase]
+                print(
+                    f"El tiempo para {envase} con envasado {tipo_envasado} es: {valor_tipo_envasado}")
+                self.le_total_env.setText(str(valor_tipo_envasado))
 
     def calcular_env(self):
         pass
@@ -456,6 +498,34 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
 
     def limpieza_sec(self):
         pass
+
+    def actualizarTotal(self):
+        print('ActualizarTotal')
+        try:
+            print('Dentro del try')
+
+            # valor_fab = int(self.le_total_fab.text())
+            # print(f'Valor fab:{valor_fab}')
+            if self.le_total_fab.text() == "":
+                valor_fab = 0
+            else:
+                valor_fab = int(self.le_total_fab.text())
+            print(f'{valor_fab}')
+            if self.le_total_env.text() == "":
+                valor_aprim = 0
+            else:
+                valor_aprim = int(self.le_total_env.text())
+            print(f'{valor_aprim}')
+
+            # valor_aprim = int(self.le_total_env.text())
+            # print(f'{valor_aprim}')
+            # valor_asec = float(self.le_total_sec.text())
+            # tiempo_total = valor_fab + valor_aprim + valor_asec
+            tiempo_total = valor_fab + valor_aprim
+            self.le_total_produccion.setText(str(tiempo_total))
+        except ValueError:
+            print(f'Dentro del except')
+            self.le_total_produccion.setText("")
 
 
 if __name__ == "__main__":

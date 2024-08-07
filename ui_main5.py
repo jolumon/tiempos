@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main5VhTCYe.ui'
+## Form generated from reading UI file 'main5UxiPLD.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.7.2
 ##
@@ -119,6 +119,7 @@ class Ui_MainWindow(object):
 
         self.lbl_operarios_limp_fab = QLabel(self.fabricacion)
         self.lbl_operarios_limp_fab.setObjectName(u"lbl_operarios_limp_fab")
+        self.lbl_operarios_limp_fab.setIndent(30)
 
         self.formLayout_2.setWidget(6, QFormLayout.LabelRole, self.lbl_operarios_limp_fab)
 
@@ -168,6 +169,7 @@ class Ui_MainWindow(object):
 
         self.lbl_operarios_env = QLabel(self.aprimario)
         self.lbl_operarios_env.setObjectName(u"lbl_operarios_env")
+        self.lbl_operarios_env.setIndent(30)
 
         self.formLayout_3.setWidget(5, QFormLayout.LabelRole, self.lbl_operarios_env)
 
@@ -209,6 +211,7 @@ class Ui_MainWindow(object):
 
         self.lbl_capacidad_env = QLabel(self.aprimario)
         self.lbl_capacidad_env.setObjectName(u"lbl_capacidad_env")
+        self.lbl_capacidad_env.setIndent(30)
 
         self.formLayout_3.setWidget(1, QFormLayout.LabelRole, self.lbl_capacidad_env)
 
@@ -242,6 +245,7 @@ class Ui_MainWindow(object):
 
         self.lbl_operarios_loteado_prod = QLabel(self.asecundario)
         self.lbl_operarios_loteado_prod.setObjectName(u"lbl_operarios_loteado_prod")
+        self.lbl_operarios_loteado_prod.setIndent(30)
 
         self.formLayout_4.setWidget(1, QFormLayout.LabelRole, self.lbl_operarios_loteado_prod)
 
@@ -263,6 +267,7 @@ class Ui_MainWindow(object):
 
         self.lbl_operarios_etiquetado_prod = QLabel(self.asecundario)
         self.lbl_operarios_etiquetado_prod.setObjectName(u"lbl_operarios_etiquetado_prod")
+        self.lbl_operarios_etiquetado_prod.setIndent(30)
 
         self.formLayout_4.setWidget(3, QFormLayout.LabelRole, self.lbl_operarios_etiquetado_prod)
 
@@ -283,6 +288,7 @@ class Ui_MainWindow(object):
 
         self.lbl_operarios_idioma_prod = QLabel(self.asecundario)
         self.lbl_operarios_idioma_prod.setObjectName(u"lbl_operarios_idioma_prod")
+        self.lbl_operarios_idioma_prod.setIndent(30)
 
         self.formLayout_4.setWidget(7, QFormLayout.LabelRole, self.lbl_operarios_idioma_prod)
 
@@ -309,6 +315,7 @@ class Ui_MainWindow(object):
 
         self.lbl_operarios_sec = QLabel(self.asecundario)
         self.lbl_operarios_sec.setObjectName(u"lbl_operarios_sec")
+        self.lbl_operarios_sec.setIndent(30)
 
         self.formLayout_4.setWidget(11, QFormLayout.LabelRole, self.lbl_operarios_sec)
 
@@ -343,6 +350,7 @@ class Ui_MainWindow(object):
 
         self.lbl_operarios_pack_prod = QLabel(self.asecundario)
         self.lbl_operarios_pack_prod.setObjectName(u"lbl_operarios_pack_prod")
+        self.lbl_operarios_pack_prod.setIndent(30)
 
         self.formLayout_4.setWidget(9, QFormLayout.LabelRole, self.lbl_operarios_pack_prod)
 
@@ -353,6 +361,7 @@ class Ui_MainWindow(object):
 
         self.lbl_operarios_encajado_prod = QLabel(self.asecundario)
         self.lbl_operarios_encajado_prod.setObjectName(u"lbl_operarios_encajado_prod")
+        self.lbl_operarios_encajado_prod.setIndent(30)
 
         self.formLayout_4.setWidget(5, QFormLayout.LabelRole, self.lbl_operarios_encajado_prod)
 
@@ -434,7 +443,7 @@ class Ui_MainWindow(object):
         self.total_aprimario.setText(QCoreApplication.translate("MainWindow", u"Total", None))
         self.le_total_env.setPlaceholderText(QCoreApplication.translate("MainWindow", u"minutos", None))
         self.btn_calcular_env.setText(QCoreApplication.translate("MainWindow", u"Calcular", None))
-        self.lbl_capacidad_env.setText(QCoreApplication.translate("MainWindow", u"Capacidad", None))
+        self.lbl_capacidad_env.setText(QCoreApplication.translate("MainWindow", u"Capacidad / mL", None))
         self.asecundario.setTitle(QCoreApplication.translate("MainWindow", u"Acondicionamiento secundario", None))
         self.cb_loteado_prod_sec.setText(QCoreApplication.translate("MainWindow", u"Loteado producto", None))
         self.cmb_loteado_prod_sec.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Modo", None))
