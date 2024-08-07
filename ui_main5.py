@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main5UxiPLD.ui'
+## Form generated from reading UI file 'main5NaDvVF.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.7.2
 ##
@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(1120, 609)
+        MainWindow.resize(1134, 609)
         sizePolicy = QSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -41,12 +41,14 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.fabricacion = QGroupBox(self.centralwidget)
         self.fabricacion.setObjectName(u"fabricacion")
+        self.fabricacion.setFlat(False)
         self.horizontalLayout = QHBoxLayout(self.fabricacion)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.formLayout_2 = QFormLayout()
         self.formLayout_2.setObjectName(u"formLayout_2")
         self.lbl_cantidad_fab = QLabel(self.fabricacion)
         self.lbl_cantidad_fab.setObjectName(u"lbl_cantidad_fab")
+        self.lbl_cantidad_fab.setIndent(10)
 
         self.formLayout_2.setWidget(0, QFormLayout.LabelRole, self.lbl_cantidad_fab)
 
@@ -143,82 +145,93 @@ class Ui_MainWindow(object):
         self.cb_prep_env = QCheckBox(self.aprimario)
         self.cb_prep_env.setObjectName(u"cb_prep_env")
 
-        self.formLayout_3.setWidget(0, QFormLayout.LabelRole, self.cb_prep_env)
+        self.formLayout_3.setWidget(1, QFormLayout.LabelRole, self.cb_prep_env)
 
         self.cmb_prep_env = QComboBox(self.aprimario)
         self.cmb_prep_env.setObjectName(u"cmb_prep_env")
         self.cmb_prep_env.setEnabled(False)
 
-        self.formLayout_3.setWidget(0, QFormLayout.FieldRole, self.cmb_prep_env)
+        self.formLayout_3.setWidget(1, QFormLayout.FieldRole, self.cmb_prep_env)
 
         self.cb_envasado_env = QCheckBox(self.aprimario)
         self.cb_envasado_env.setObjectName(u"cb_envasado_env")
 
-        self.formLayout_3.setWidget(2, QFormLayout.LabelRole, self.cb_envasado_env)
+        self.formLayout_3.setWidget(3, QFormLayout.LabelRole, self.cb_envasado_env)
 
         self.cmb_env = QComboBox(self.aprimario)
         self.cmb_env.setObjectName(u"cmb_env")
         self.cmb_env.setEnabled(False)
 
-        self.formLayout_3.setWidget(2, QFormLayout.FieldRole, self.cmb_env)
+        self.formLayout_3.setWidget(3, QFormLayout.FieldRole, self.cmb_env)
 
         self.cb_limpieza_env = QCheckBox(self.aprimario)
         self.cb_limpieza_env.setObjectName(u"cb_limpieza_env")
 
-        self.formLayout_3.setWidget(4, QFormLayout.LabelRole, self.cb_limpieza_env)
+        self.formLayout_3.setWidget(5, QFormLayout.LabelRole, self.cb_limpieza_env)
 
         self.lbl_operarios_env = QLabel(self.aprimario)
         self.lbl_operarios_env.setObjectName(u"lbl_operarios_env")
         self.lbl_operarios_env.setIndent(30)
 
-        self.formLayout_3.setWidget(5, QFormLayout.LabelRole, self.lbl_operarios_env)
+        self.formLayout_3.setWidget(6, QFormLayout.LabelRole, self.lbl_operarios_env)
 
         self.le_operarios_env = QLineEdit(self.aprimario)
         self.le_operarios_env.setObjectName(u"le_operarios_env")
 
-        self.formLayout_3.setWidget(5, QFormLayout.FieldRole, self.le_operarios_env)
+        self.formLayout_3.setWidget(6, QFormLayout.FieldRole, self.le_operarios_env)
 
         self.verticalSpacer_2 = QSpacerItem(20, 60, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
 
-        self.formLayout_3.setItem(6, QFormLayout.LabelRole, self.verticalSpacer_2)
+        self.formLayout_3.setItem(7, QFormLayout.LabelRole, self.verticalSpacer_2)
 
         self.line_4 = QFrame(self.aprimario)
         self.line_4.setObjectName(u"line_4")
         self.line_4.setFrameShape(QFrame.Shape.HLine)
         self.line_4.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.formLayout_3.setWidget(7, QFormLayout.LabelRole, self.line_4)
+        self.formLayout_3.setWidget(8, QFormLayout.LabelRole, self.line_4)
 
         self.total_aprimario = QLabel(self.aprimario)
         self.total_aprimario.setObjectName(u"total_aprimario")
 
-        self.formLayout_3.setWidget(8, QFormLayout.LabelRole, self.total_aprimario)
+        self.formLayout_3.setWidget(9, QFormLayout.LabelRole, self.total_aprimario)
 
         self.le_total_env = QLineEdit(self.aprimario)
         self.le_total_env.setObjectName(u"le_total_env")
         self.le_total_env.setReadOnly(True)
 
-        self.formLayout_3.setWidget(8, QFormLayout.FieldRole, self.le_total_env)
+        self.formLayout_3.setWidget(9, QFormLayout.FieldRole, self.le_total_env)
 
         self.verticalSpacer_5 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
-        self.formLayout_3.setItem(9, QFormLayout.FieldRole, self.verticalSpacer_5)
+        self.formLayout_3.setItem(10, QFormLayout.FieldRole, self.verticalSpacer_5)
 
         self.btn_calcular_env = QPushButton(self.aprimario)
         self.btn_calcular_env.setObjectName(u"btn_calcular_env")
 
-        self.formLayout_3.setWidget(10, QFormLayout.FieldRole, self.btn_calcular_env)
+        self.formLayout_3.setWidget(11, QFormLayout.FieldRole, self.btn_calcular_env)
 
         self.lbl_capacidad_env = QLabel(self.aprimario)
         self.lbl_capacidad_env.setObjectName(u"lbl_capacidad_env")
         self.lbl_capacidad_env.setIndent(30)
 
-        self.formLayout_3.setWidget(1, QFormLayout.LabelRole, self.lbl_capacidad_env)
+        self.formLayout_3.setWidget(2, QFormLayout.LabelRole, self.lbl_capacidad_env)
 
         self.cmb_capacidad = QComboBox(self.aprimario)
         self.cmb_capacidad.setObjectName(u"cmb_capacidad")
 
-        self.formLayout_3.setWidget(1, QFormLayout.FieldRole, self.cmb_capacidad)
+        self.formLayout_3.setWidget(2, QFormLayout.FieldRole, self.cmb_capacidad)
+
+        self.lbl_unidades = QLabel(self.aprimario)
+        self.lbl_unidades.setObjectName(u"lbl_unidades")
+        self.lbl_unidades.setIndent(10)
+
+        self.formLayout_3.setWidget(0, QFormLayout.LabelRole, self.lbl_unidades)
+
+        self.le_unidades = QLineEdit(self.aprimario)
+        self.le_unidades.setObjectName(u"le_unidades")
+
+        self.formLayout_3.setWidget(0, QFormLayout.FieldRole, self.le_unidades)
 
 
         self.verticalLayout.addLayout(self.formLayout_3)
@@ -444,6 +457,7 @@ class Ui_MainWindow(object):
         self.le_total_env.setPlaceholderText(QCoreApplication.translate("MainWindow", u"minutos", None))
         self.btn_calcular_env.setText(QCoreApplication.translate("MainWindow", u"Calcular", None))
         self.lbl_capacidad_env.setText(QCoreApplication.translate("MainWindow", u"Capacidad / mL", None))
+        self.lbl_unidades.setText(QCoreApplication.translate("MainWindow", u"Unidades", None))
         self.asecundario.setTitle(QCoreApplication.translate("MainWindow", u"Acondicionamiento secundario", None))
         self.cb_loteado_prod_sec.setText(QCoreApplication.translate("MainWindow", u"Loteado producto", None))
         self.cmb_loteado_prod_sec.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Modo", None))

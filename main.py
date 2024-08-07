@@ -1,4 +1,11 @@
-from PySide6.QtWidgets import QApplication, QCheckBox, QLabel, QComboBox, QPushButton, QDialog
+from PySide6.QtWidgets import (
+    QApplication,
+    QCheckBox,
+    QLabel,
+    QComboBox,
+    QPushButton,
+    QDialog,
+)
 from PySide6.QtCore import Qt
 from ui_main5 import QMainWindow, Ui_MainWindow
 from auxiliares import VentanaFaltanDatos
@@ -46,8 +53,21 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.tipos_loteado = ["Automático", "Manual"]
         self.tipos_etiquetado = ["Automático", "Manual"]
         self.tipos_encajado_tubos = ["Sin separadores", "Con separadores"]
-        self.capacidades = {"Tubos": [5, 10, 15, 75, 100, 200], "Tarros": [
-            50, 250, 300, 500, 1000], "Frascos": [15, 30, 50, 100, 125, 150, 200, 250, 500, 1000]}
+        self.tiempos_fabricacion = {"Emulsión": 240, "Gel": 180, "Solución": 120}
+        self.capacidades = {
+            "Tubos": [5, 10, 15, 75, 100, 200],
+            "Tarros": [50, 250, 300, 500, 1000],
+            "Frascos": [15, 30, 50, 100, 125, 150, 200, 250, 500, 1000],
+        }
+        self.tiempos_envasado = {"Emulsión": {"Máquina": 120, "Automático": 90},
+                            "Gel": {"Máquina": 120, "Automático": 90},
+                            "Solución": {"Manual": 240, "Máquina": 120, "Automático": 90}}
+
+        self.tipos_envasado = {
+            "Manual": {"Tarros": 40, "Frascos": 40},
+            "Máquina": {"Tubos": 30, "Tarros": 30, "Frascos": 30},
+            "Automático": {"Tubos": 120, "Tarros": 35, "Frascos": 35},
+        }
 
         # Asignación de datos a los comboBox de la aplicación
         self.cmb_fabricacion_fab.addItems(list(self.tipos_fabricacion.keys()))
@@ -454,9 +474,12 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         # envases = {"Tubos": [5, 10, 15, 75, 100, 200],
         #            "Tarros": [50, 250, 300, 500],
         #            "Frascos": [15, 30, 50, 100, 125, 150, 200, 250, 500, 1000]}
-        tipos_envasado = {"Manual": {"Tarros": 40, "Frascos": 40},
-                          "Máquina": {"Tubos": 30, "Tarros": 30, "Frascos": 30},
-                          "Automático": {"Tubos": 120, "Tarros": 35, "Frascos": 35}}
+
+        tipos_envasado = {
+            "Manual": {"Tarros": 40, "Frascos": 40},
+            "Máquina": {"Tubos": 30, "Tarros": 30, "Frascos": 30},
+            "Automático": {"Tubos": 120, "Tarros": 35, "Frascos": 35},
+        }
 
         if self.cb_prep_env.isChecked():
             envase = self.cmb_prep_env.currentText()
@@ -466,11 +489,17 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
                 # Obtener el valor correspondiente al tipo de envasado seleccionado
                 valor_tipo_envasado = tipos_envasado[tipo_envasado][envase]
                 print(
-                    f"El tiempo para {envase} con envasado {tipo_envasado} es: {valor_tipo_envasado}")
+                    f"El tiempo para {envase} con envasado {tipo_envasado} es: {valor_tipo_envasado}"
+                )
                 self.le_total_env.setText(str(valor_tipo_envasado))
 
     def calcular_env(self):
-        pass
+
+        # Tiempos de envasado para 1000 uds y 2 operarios.
+        
+        
+        unidades = int(self.le_cantidad_fab.text()) 
+        capacidad=int(self.cmb_capacidad.currentText())
 
     def calcuclar_limpieza_env():
         pass
@@ -500,9 +529,9 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         pass
 
     def actualizarTotal(self):
-        print('ActualizarTotal')
+        print("ActualizarTotal")
         try:
-            print('Dentro del try')
+            print("Dentro del try")
 
             # valor_fab = int(self.le_total_fab.text())
             # print(f'Valor fab:{valor_fab}')
@@ -510,21 +539,19 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
                 valor_fab = 0
             else:
                 valor_fab = int(self.le_total_fab.text())
-            print(f'{valor_fab}')
+            print(f"{valor_fab}")
             if self.le_total_env.text() == "":
                 valor_aprim = 0
             else:
                 valor_aprim = int(self.le_total_env.text())
-            print(f'{valor_aprim}')
+            print(f"{valor_aprim}")
 
-            # valor_aprim = int(self.le_total_env.text())
-            # print(f'{valor_aprim}')
             # valor_asec = float(self.le_total_sec.text())
             # tiempo_total = valor_fab + valor_aprim + valor_asec
             tiempo_total = valor_fab + valor_aprim
             self.le_total_produccion.setText(str(tiempo_total))
         except ValueError:
-            print(f'Dentro del except')
+            print(f"Dentro del except")
             self.le_total_produccion.setText("")
 
 
