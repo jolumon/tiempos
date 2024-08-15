@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main5NaDvVF.ui'
+## Form generated from reading UI file 'main5JtkjKm.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.7.2
 ##
@@ -41,6 +41,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.fabricacion = QGroupBox(self.centralwidget)
         self.fabricacion.setObjectName(u"fabricacion")
+        self.fabricacion.setStyleSheet(u"QGroupBox::title {\n"
+"    color: blue;\n"
+"}")
         self.fabricacion.setFlat(False)
         self.horizontalLayout = QHBoxLayout(self.fabricacion)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -138,6 +141,9 @@ class Ui_MainWindow(object):
 
         self.aprimario = QGroupBox(self.centralwidget)
         self.aprimario.setObjectName(u"aprimario")
+        self.aprimario.setStyleSheet(u"QGroupBox::title {\n"
+"    color: blue;\n"
+"}")
         self.verticalLayout = QVBoxLayout(self.aprimario)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.formLayout_3 = QFormLayout()
@@ -241,6 +247,9 @@ class Ui_MainWindow(object):
 
         self.asecundario = QGroupBox(self.centralwidget)
         self.asecundario.setObjectName(u"asecundario")
+        self.asecundario.setStyleSheet(u"QGroupBox::title {\n"
+"    color: blue;\n"
+"}")
         self.verticalLayout_2 = QVBoxLayout(self.asecundario)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.formLayout_4 = QFormLayout()

@@ -5,10 +5,11 @@ from PySide6.QtWidgets import (
     QComboBox,
     QPushButton,
     QDialog,
+    QVBoxLayout
 )
 from PySide6.QtCore import Qt
 from ui_main5 import QMainWindow, Ui_MainWindow
-from auxiliares import VentanaFaltanDatos
+from auxiliares import VentanaFaltanDatos, VentanaCantidadSuperior, VentanaNumeroEntero
 import sys
 from qt_material import apply_stylesheet
 
@@ -21,7 +22,13 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle("Tiempos de fabricación")
         self.setFixedSize(1120, 609)
+        # self.fabricacion.setStyleSheet("QGroupBox::title { color: blue; }")  # Cambia el color del título a azul
         # self.showMaximized()
+
+        # Constantes
+        # Número de unidades para realizar el cálculo, es decir, tiempo para cada 1000 uds.
+        self.UNIDADES_CALCULO = 1000
+        self.PREPARACION_MAQUINA_LOTEADO = 10  # 10 minutos
 
         # Ocultamos por defecto campos, que serán visibles si el checkbox está activado
         self.lbl_operarios_loteado_prod.hide()
@@ -44,7 +51,6 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.cmb_capacidad.hide()
 
         # Listas/Diccionario para los comboBox
-        # diccionario={"tipo_XXXXX":minutos_limpieza}
 
         self.tipos_fabricacion = {"Emulsión": 240, "Gel": 180, "Solución": 120}
         self.tipos_vaciado = ["Bomba", "Manual"]
@@ -53,15 +59,16 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.tipos_loteado = ["Automático", "Manual"]
         self.tipos_etiquetado = ["Automático", "Manual"]
         self.tipos_encajado_tubos = ["Sin separadores", "Con separadores"]
-        self.tiempos_fabricacion = {"Emulsión": 240, "Gel": 180, "Solución": 120}
+        self.tiempos_fabricacion = {
+            "Emulsión": 240, "Gel": 180, "Solución": 120}
         self.capacidades = {
             "Tubos": [5, 10, 15, 75, 100, 200],
             "Tarros": [50, 250, 300, 500, 1000],
             "Frascos": [15, 30, 50, 100, 125, 150, 200, 250, 500, 1000],
         }
         self.tiempos_envasado = {"Emulsión": {"Máquina": 120, "Automático": 90},
-                            "Gel": {"Máquina": 120, "Automático": 90},
-                            "Solución": {"Manual": 240, "Máquina": 120, "Automático": 90}}
+                                 "Gel": {"Máquina": 120, "Automático": 90},
+                                 "Solución": {"Manual": 240, "Máquina": 120, "Automático": 90}}
 
         self.tipos_envasado = {
             "Manual": {"Tarros": 40, "Frascos": 40},
@@ -98,7 +105,7 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.le_total_sec.textChanged.connect(self.actualizarTotal)
 
         self.btn_calcular_fab.clicked.connect(self.total_fabricacion)
-        self.btn_calcular_env.clicked.connect(self.calcular_prep_env)
+        self.btn_calcular_env.clicked.connect(self.total_envasado)
 
         self.cmb_prep_env.currentTextChanged.connect(
             self.actualizar_capacidades)
@@ -165,6 +172,8 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         self.le_total_produccion.setText("")
 
         self.le_total_fab.setText("")
+
+        self.le_unidades.setText("")
 
         self.le_cantidad_fab.setFocus()
 
@@ -373,6 +382,8 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
 
             except ValueError:
                 raise ValueError("La cantidad debe ser un número entero")
+                ventana_numero_entero = VentanaNumeroEntero()
+                ventana_numero_entero.exex()
 
         else:
             tiempo_pesada = 0
@@ -387,6 +398,10 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
             raise ValueError("La cantidad no puede estar vacía")
         try:
             cantidad = int(cantidad_texto)
+            if cantidad > 400:
+                ventana_capacidad = VentanaCantidadSuperior()
+                ventana_capacidad.exec()
+                print('Cantidad superior a la capciad de máxima del reactor')
         except ValueError:
             raise ValueError("La cantidad debe ser un número entero")
 
@@ -450,14 +465,17 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         return tiempo_limpieza
 
     def total_fabricacion(self):
-
-        tiempo = (
-            self.calcular_pesada()
-            + self.calcular_fabricacion()
-            + self.calcular_vaciado()
-            + self.calcular_limpieza_fab()
-        )
-        self.le_total_fab.setText(str(tiempo))
+        try:
+            tiempo = (
+                self.calcular_pesada()
+                + self.calcular_fabricacion()
+                + self.calcular_vaciado()
+                + self.calcular_limpieza_fab()
+            )
+            self.le_total_fab.setText(str(tiempo))
+        except Exception:
+            ventana_error = VentanaFaltanDatos()
+            ventana_error.exec()
 
     # ACONDICIONAMIENTO PRIMARIO
 
@@ -491,24 +509,54 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
                 print(
                     f"El tiempo para {envase} con envasado {tipo_envasado} es: {valor_tipo_envasado}"
                 )
-                self.le_total_env.setText(str(valor_tipo_envasado))
+                print(f'Tiempo de envasado:{valor_tipo_envasado}')
+                # self.le_total_env.setText(str(valor_tipo_envasado))
+                return valor_tipo_envasado
 
     def calcular_env(self):
 
         # Tiempos de envasado para 1000 uds y 2 operarios.
-        
-        
-        unidades = int(self.le_cantidad_fab.text()) 
-        capacidad=int(self.cmb_capacidad.currentText())
+        if self.cmb_capacidad.currentText() != "":
+            unidades = int(self.le_unidades.text())
+            print(f'Unidades: {unidades}')
+            capacidad = int(self.cmb_capacidad.currentText())
+            print(f'Capacidad: {capacidad}')
+            print(f'{capacidad}')
+            if capacidad > 500:
+                tiempo_envasado = (unidades*60*2)/self.UNIDADES_CALCULO
+            else:
+                tiempo_envasado = (unidades*60)/self.UNIDADES_CALCULO
+            print(f'Tiempo de envasado:{tiempo_envasado}')
+            return tiempo_envasado
 
-    def calcuclar_limpieza_env():
-        pass
+    def calcuclar_limpieza_env(self):
+        # Tiempo de limpieza 60' por operario
+        if self.le_operarios_env.text() != "":
+            operarios = int(self.le_operarios_env.text())
+            tiempo_limpieza_env = 60/operarios
+            return tiempo_limpieza_env
+
+    def total_envasado(self):
+        try:
+            tiempo = (
+                # self.calcular_prep_env()
+                self.calcular_env()
+                + self.calcuclar_limpieza_env()
+
+            )
+            self.le_total_env.setText(str(tiempo))
+        except Exception:
+            ventana_error = VentanaFaltanDatos()
+            ventana_error.exec()
 
     # ACONDICIONAMIENTO SECUNDARIO
+
     def calcular_loteado_prod_sec(self):
 
         # si loteado automatico: tiempo se incluye en el envasado
         # si loteado es manual:preparacion maquina+loteado
+
+        preparacion_maquina = 10
 
         pass
 
@@ -539,12 +587,12 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
                 valor_fab = 0
             else:
                 valor_fab = int(self.le_total_fab.text())
-            print(f"{valor_fab}")
+            print(f"Valor fab: {valor_fab}")
             if self.le_total_env.text() == "":
                 valor_aprim = 0
             else:
-                valor_aprim = int(self.le_total_env.text())
-            print(f"{valor_aprim}")
+                valor_aprim = float(self.le_total_env.text())
+            print(f"Valor aprim: {valor_aprim}")
 
             # valor_asec = float(self.le_total_sec.text())
             # tiempo_total = valor_fab + valor_aprim + valor_asec
@@ -552,6 +600,9 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
             self.le_total_produccion.setText(str(tiempo_total))
         except ValueError:
             print(f"Dentro del except")
+            ventana_error = VentanaFaltanDatos()
+            ventana_error.show()
+            QtCore.QCoreApplication.processEvents()
             self.le_total_produccion.setText("")
 
 
