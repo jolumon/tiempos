@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 from ui_main5 import QMainWindow, Ui_MainWindow
-from auxiliares import VentanaFaltanDatos, VentanaCantidadSuperior, VentanaNumeroEntero
+from auxiliares import VentanaFaltanDatos, VentanaCantidadSuperior, VentanaNumeroEntero, VentanaComponentesVacio, VentanaErrorCalculoFabricacion
 import sys
 from qt_material import apply_stylesheet
 
@@ -376,6 +376,8 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
             componentes = self.le_pesada_fab.text()
             if not componentes:
                 raise ValueError("La cantidad no puede estar vacia")
+                ventana_componentes_vacio = VentanaComponentesVacio()
+                ventana_componentes_vacio.exec()
             try:
                 componentes = int(self.le_pesada_fab.text())
                 tiempo_pesada = componentes * 5
@@ -474,8 +476,8 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
             )
             self.le_total_fab.setText(str(tiempo))
         except Exception:
-            ventana_error = VentanaFaltanDatos()
-            ventana_error.exec()
+            ventana_faltan_datos = VentanaErrorCalculoFabricacion()
+            ventana_faltan_datos.exec()
 
     # ACONDICIONAMIENTO PRIMARIO
 
