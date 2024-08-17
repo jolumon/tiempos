@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'main5JtkjKm.ui'
+## Form generated from reading UI file 'main5MjNQNO.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.7.2
 ##
@@ -423,10 +423,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_3.addWidget(self.btn_reset)
 
-        self.btn_calcular_total = QPushButton(self.centralwidget)
-        self.btn_calcular_total.setObjectName(u"btn_calcular_total")
+        self.btn_guardar = QPushButton(self.centralwidget)
+        self.btn_guardar.setObjectName(u"btn_guardar")
 
-        self.horizontalLayout_3.addWidget(self.btn_calcular_total)
+        self.horizontalLayout_3.addWidget(self.btn_guardar)
 
 
         self.verticalLayout_4.addLayout(self.horizontalLayout_3)
@@ -489,6 +489,6 @@ class Ui_MainWindow(object):
         self.lbl_total_producion.setText(QCoreApplication.translate("MainWindow", u"Tiempo total", None))
         self.le_total_produccion.setPlaceholderText(QCoreApplication.translate("MainWindow", u"minutos", None))
         self.btn_reset.setText(QCoreApplication.translate("MainWindow", u"Reset", None))
-        self.btn_calcular_total.setText(QCoreApplication.translate("MainWindow", u"Calcular", None))
+        self.btn_guardar.setText(QCoreApplication.translate("MainWindow", u"Guardar", None))
     # retranslateUi
 
