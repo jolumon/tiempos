@@ -17,17 +17,27 @@ class Popup(QDialog):
         self.setLayout(self.layout)
 
 
+class VentanaErrorCalculoFabricacion(Popup):
+    def __init__(self):
+        super().__init__("Error", "Repase los datos introducidos.")
+
+
 class VentanaFaltanDatos(Popup):
     def __init__(self):
-        super().__init__("Faltan datos", "Por favor, complete todos los campos.")
+        super().__init__("Error: Faltan datos", "Por favor, complete todos los campos.")
 
 
 class VentanaCantidadSuperior(Popup):
     def __init__(self):
-        super().__init__("Cantidad superior",
+        super().__init__("Error: Cantidad superior",
                          "La cantidad ingresada es superior a la permitida.")
 
 
 class VentanaNumeroEntero(Popup):
     def __init__(self):
         super().__init__("Error", "La cantidad debe ser un número entero.")
+
+
+class VentanaComponentesVacio(Popup):
+    def __init__(self):
+        super().__init__("Error", "La cantidad no puede estar vacia.")
