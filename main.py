@@ -109,6 +109,8 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
 
         self.cmb_prep_env.currentTextChanged.connect(
             self.actualizar_capacidades)
+        
+        self.btn_guardar.clicked.connect(self.guardar)
 
     def reset(self):
         self.le_cantidad_fab.setText("")
@@ -608,6 +610,11 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
             self.le_total_produccion.setText("")
 
 
+    def guardar(self):
+        print('Guardado')
+        pass
+    
+    
 if __name__ == "__main__":
     app = QApplication([])
     apply_stylesheet(app, theme="light_blue_500.xml")
