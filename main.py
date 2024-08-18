@@ -109,7 +109,7 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
 
         self.cmb_prep_env.currentTextChanged.connect(
             self.actualizar_capacidades)
-        
+
         self.btn_guardar.clicked.connect(self.guardar)
 
     def reset(self):
@@ -561,13 +561,37 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         # si loteado es manual:preparacion maquina+loteado
 
         preparacion_maquina = 10
+        tiempo_loteado = 0
 
-        pass
+        tipo_loteado = self.cmb_loteado_prod_sec.text()
+        if not tipo_loteado:
+            ventana_loteado = VentanaFaltanDatos()
+            ventana_loteado.exec()
+        else:
+            if tipo_loteado in self.tipos_loteado:
+                print(f'Has elegido: {tipo_loteado}')
+
+                if tipo_loteado == "Manual":
+                    # Hay que estimar el tiempo de loteado correctamente
+                    tiempo_loteado = 0.12*int(self.le_unidades.text())
+                    preparacion_maquina = 15
+
+            else:
+                print('Tiene que elegir una opción')
+
+        tiempo_loteado_total = preparacion_maquina+tiempo_loteado
+        return tiempo_loteado_total
 
     def calcular_etiquetado_prod_sec(self):
+        #Loteado producto 0.12 minutos / unidad
+        
         pass
 
     def calcular_encajado_prod_esc(self):
+        
+        # Hay que añadir el tiempo de loteado de las cajas 0.12 minutos / unidad
+        
+        #Encajado producto 1000 uds 240 minutos
         pass
 
     def calcular_eti_idioma_prod_esc(self):
@@ -609,12 +633,11 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
             QtCore.QCoreApplication.processEvents()
             self.le_total_produccion.setText("")
 
-
     def guardar(self):
         print('Guardado')
         pass
-    
-    
+
+
 if __name__ == "__main__":
     app = QApplication([])
     apply_stylesheet(app, theme="light_blue_500.xml")
