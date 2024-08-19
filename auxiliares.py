@@ -22,6 +22,11 @@ class VentanaErrorCalculoFabricacion(Popup):
         super().__init__("Error", "Repase los datos introducidos.")
 
 
+class VentanaErrorSeleccion(Popup):
+    def __init__(self):
+        super().__init__("Error", "Tiene que elegir una opción.")
+
+
 class VentanaFaltanDatos(Popup):
     def __init__(self):
         super().__init__("Error: Faltan datos", "Por favor, complete todos los campos.")
