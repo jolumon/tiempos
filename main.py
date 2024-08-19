@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt
 from ui_main5 import QMainWindow, Ui_MainWindow
-from auxiliares import VentanaFaltanDatos, VentanaCantidadSuperior, VentanaNumeroEntero, VentanaComponentesVacio, VentanaErrorCalculoFabricacion
+from auxiliares import VentanaFaltanDatos, VentanaCantidadSuperior, VentanaNumeroEntero, VentanaComponentesVacio, VentanaErrorCalculoFabricacion, VentanaErrorSeleccion
 import sys
 from qt_material import apply_stylesheet
 
@@ -106,6 +106,7 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
 
         self.btn_calcular_fab.clicked.connect(self.total_fabricacion)
         self.btn_calcular_env.clicked.connect(self.total_envasado)
+        self.btn_calcular_sec.clicked.connect(self.total_envasado)
 
         self.cmb_prep_env.currentTextChanged.connect(
             self.actualizar_capacidades)
@@ -583,25 +584,64 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         return tiempo_loteado_total
 
     def calcular_etiquetado_prod_sec(self):
-        #Loteado producto 0.12 minutos / unidad
-        
-        pass
+        # Etiquetado manual producto 0.3 minutos / unidad / operario
+
+        # Etiquetado automatico producto 0.09 minutos/unidad
+        etiquetado_prod = self.cb_etiquetado_prod_sec.isChecked()
+        tipo_etiquetado_prod = self.cmb_etiquetado_prod_sec.currentText()
+        if etiquetado_prod:
+            # if tipo_etiquetado_prod == 'Manual':
+            #     try:
+            #         operarios_etiq = int(
+            #             self.le_operarios_etiquetado_prod.text())
+            #         tiempo_etiquetado_prod = 0.3 * \
+            #             int(self.le_unidades.text())/(operarios_etiq)
+
+            #     except:
+            #         print('Comprobar las unidades en envasado')
+            #         ventana = VentanaFaltanDatos()
+            #         ventana.exec()
+
+            # if tipo_etiquetado_prod == 'Automático':
+            #     try:
+            #         tiempo_etiquetado_prod = 0.09*int(self.le_unidades.text())
+            #     except:
+            #         print('Comprobar las unidades en envasado')
+            #         ventana = VentanaFaltanDatos()
+            #         ventana.exec()
+            try:
+                tiempo_etiquetado_prod = 0.3*int(self.le_unidades.text())/(
+                    operarios_etiq) if tipo_etiquetado_prod in self.tipos_etiquetado else 0.09*int(self.le_unidades.text())
+            except:
+                print('Comprobar las unidades en envasado y operarios en etiquetado acond_sec')
+                ventana = VentanaFaltanDatos()
+                ventana.exec()
+        else:
+            tiempo_etiquetado_prod = 0
+
+        return tiempo_etiquetado_prod
 
     def calcular_encajado_prod_esc(self):
-        
-        # Hay que añadir el tiempo de loteado de las cajas 0.12 minutos / unidad
-        
-        #Encajado producto 1000 uds 240 minutos
+
+        # Hay que añadir el tiempo de loteado de las cajas 0.12 minutos / unidad / operario
+
+        # Encajado producto 1000 uds 480 minutos 1 operario
         pass
 
     def calcular_eti_idioma_prod_esc(self):
         pass
 
     def calcular_pack_sec(self):
+        # Encajado 1000 unidades 100 minutos, es decir, 1 unidad 0.1 minutos.
 
         pass
 
     def limpieza_sec(self):
+
+        pass
+
+    def calcular_acond_secundario(self):
+
         pass
 
     def actualizarTotal(self):
