@@ -519,20 +519,24 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
                 return valor_tipo_envasado
 
     def calcular_env(self):
+        try:
+            # Tiempos de envasado para 1000 uds y 2 operarios.
 
-        # Tiempos de envasado para 1000 uds y 2 operarios.
-        if self.cmb_capacidad.currentText() != "":
-            unidades = int(self.le_unidades.text())
-            print(f'Unidades: {unidades}')
-            capacidad = int(self.cmb_capacidad.currentText())
-            print(f'Capacidad: {capacidad}')
-            print(f'{capacidad}')
-            if capacidad > 500:
-                tiempo_envasado = (unidades*60*2)/self.UNIDADES_CALCULO
-            else:
-                tiempo_envasado = (unidades*60)/self.UNIDADES_CALCULO
-            print(f'Tiempo de envasado:{tiempo_envasado}')
-            return tiempo_envasado
+            if self.cmb_capacidad.currentText() != "":
+                unidades = int(self.le_unidades.text())
+                print(f'Unidades: {unidades}')
+                capacidad = int(self.cmb_capacidad.currentText())
+                print(f'Capacidad: {capacidad}')
+                print(f'{capacidad}')
+                if capacidad > 500:
+                    tiempo_envasado = (unidades*60*2)/self.UNIDADES_CALCULO
+                else:
+                    tiempo_envasado = (unidades*60)/self.UNIDADES_CALCULO
+                print(f'Tiempo de envasado:{tiempo_envasado}')
+                return tiempo_envasado
+        except Exception:
+            ventana_faltan_datos = VentanaFaltanDatos()
+            ventana_faltan_datos.exec()
 
     def calcuclar_limpieza_env(self):
         # Tiempo de limpieza 60' por operario
@@ -590,32 +594,28 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         etiquetado_prod = self.cb_etiquetado_prod_sec.isChecked()
         tipo_etiquetado_prod = self.cmb_etiquetado_prod_sec.currentText()
         if etiquetado_prod:
-            # if tipo_etiquetado_prod == 'Manual':
-            #     try:
-            #         operarios_etiq = int(
-            #             self.le_operarios_etiquetado_prod.text())
-            #         tiempo_etiquetado_prod = 0.3 * \
-            #             int(self.le_unidades.text())/(operarios_etiq)
-
-            #     except:
-            #         print('Comprobar las unidades en envasado')
-            #         ventana = VentanaFaltanDatos()
-            #         ventana.exec()
-
-            # if tipo_etiquetado_prod == 'Automático':
-            #     try:
-            #         tiempo_etiquetado_prod = 0.09*int(self.le_unidades.text())
-            #     except:
-            #         print('Comprobar las unidades en envasado')
-            #         ventana = VentanaFaltanDatos()
-            #         ventana.exec()
             try:
-                tiempo_etiquetado_prod = 0.3*int(self.le_unidades.text())/(
-                    operarios_etiq) if tipo_etiquetado_prod in self.tipos_etiquetado else 0.09*int(self.le_unidades.text())
+                if tipo_etiquetado_prod == 'Manual':
+
+                    operarios_etiq = int(
+                        self.le_operarios_etiquetado_prod.text())
+                    tiempo_etiquetado_prod = 0.3 * \
+                        int(self.le_unidades.text())/(operarios_etiq)
+
+                if tipo_etiquetado_prod == 'Automático':
+
+                    tiempo_etiquetado_prod = 0.09*int(self.le_unidades.text())
             except:
-                print('Comprobar las unidades en envasado y operarios en etiquetado acond_sec')
+                print('Comprobar las unidades en envasado')
                 ventana = VentanaFaltanDatos()
                 ventana.exec()
+            # try:
+            #     tiempo_etiquetado_prod = 0.3*int(self.le_unidades.text())/(
+            #         operarios_etiq) if "Manual" in self.tipos_etiquetado else 0.09*int(self.le_unidades.text())
+            # except Exception:
+            #     print('Comprobar las unidades en envasado y operarios en etiquetado acond_sec')
+            #     ventana = VentanaFaltanDatos()
+            #     ventana.exec()
         else:
             tiempo_etiquetado_prod = 0
 
