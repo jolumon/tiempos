@@ -40,9 +40,14 @@ class VentanaCantidadSuperior(Popup):
 
 class VentanaNumeroEntero(Popup):
     def __init__(self):
-        super().__init__("Error", "La cantidad debe ser un número entero.")
+        super().__init__("Error", "Comprueba la cantidad a fabricar. La cantidad debe ser un número entero.")
 
 
 class VentanaComponentesVacio(Popup):
     def __init__(self):
         super().__init__("Error", "La cantidad no puede estar vacia.")
+
+
+class VentanaDivisionCero(Popup):
+    def __init__(self):
+        super().__init__("Error", "No se puede dividir entre cero.")
