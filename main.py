@@ -581,17 +581,15 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
                 ventana_div_cero.exec()
 
     def total_envasado(self):
-        try:
-            tiempo = (
-                self.calcular_prep_env() +
-                self.calcular_env()
-                + self.calcuclar_limpieza_env()
+        
+        tiempo = (
+            self.calcular_prep_env() +
+            self.calcular_env()
+            + self.calcuclar_limpieza_env()
 
-            )
-            self.le_total_env.setText(str(tiempo))
-        except Exception:
-            ventana_error = VentanaFaltanDatos()
-            ventana_error.exec()
+        )
+        self.le_total_env.setText(str(tiempo))
+        
 
     # ACONDICIONAMIENTO SECUNDARIO
 
