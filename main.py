@@ -8,8 +8,8 @@ from PySide6.QtWidgets import (
     QVBoxLayout
 )
 from PySide6.QtCore import Qt
-from ui_main5 import QMainWindow, Ui_MainWindow
-from auxiliares import VentanaFaltanDatos, VentanaCantidadSuperior, VentanaNumeroEntero, VentanaComponentesVacio, VentanaErrorCalculoFabricacion, VentanaErrorSeleccion
+from ui_main6 import QMainWindow, Ui_MainWindow
+from auxiliares import VentanaFaltanDatos, VentanaCantidadSuperior, VentanaNumeroEntero, VentanaComponentesVacio, VentanaErrorCalculoFabricacion, VentanaErrorSeleccion, VentanaDivisionCero
 import sys
 from qt_material import apply_stylesheet
 
@@ -110,6 +110,7 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
 
         self.cmb_prep_env.currentTextChanged.connect(
             self.actualizar_capacidades)
+        self.cmb_capacidad.currentTextChanged.connect(self.mostrar_unidades)
 
         self.btn_guardar.clicked.connect(self.guardar)
 
@@ -401,6 +402,8 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         cantidad_texto = self.le_cantidad_fab.text()
         if not cantidad_texto:
             raise ValueError("La cantidad no puede estar vacía")
+            ventana_componentes_vacio = VentanaComponentesVacio()
+            ventana_componentes_vacio.exec()
         try:
             cantidad = int(cantidad_texto)
             if cantidad > 400:
@@ -514,26 +517,54 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
                 print(
                     f"El tiempo para {envase} con envasado {tipo_envasado} es: {valor_tipo_envasado}"
                 )
-                print(f'Tiempo de envasado:{valor_tipo_envasado}')
+                print(
+                    f'Tiempo de envasado-calcular_prep_env:{valor_tipo_envasado}')
                 # self.le_total_env.setText(str(valor_tipo_envasado))
                 return valor_tipo_envasado
+
+    def obtener_cantidad_fabricada(self):
+        try:
+            cantidad_fabricada = int(self.le_cantidad_fab.text())
+            return cantidad_fabricada
+        except ValueError:
+            ventana_dato_incorrecto = VentanaNumeroEntero()
+            ventana_dato_incorrecto.exec()
+        except Exception:
+            ventana_faltan_datos = VentanaFaltanDatos()
+            ventana_faltan_datos.exec()
+
+    def obtener_capacidad(self):
+        try:
+            if self.cmb_capacidad.currentText() != "":
+                capacidad = int(self.cmb_capacidad.currentText())/1000
+                return capacidad
+        except ValueError:
+            ventana_dato_incorrecto = VentanaNumeroEntero()
+            ventana_dato_incorrecto.exec()
+        except Exception:
+            ventana_faltan_datos = VentanaFaltanDatos()
+            ventana_faltan_datos.exec()
+
+    def mostrar_unidades(self):
+        cantidad_fabricada = self.obtener_cantidad_fabricada()
+        capacidad = self.obtener_capacidad()
+        unidades = int(cantidad_fabricada/capacidad)
+        self.le_unidades.setText(str(unidades))
+        return unidades
 
     def calcular_env(self):
         try:
             # Tiempos de envasado para 1000 uds y 2 operarios.
 
-            if self.cmb_capacidad.currentText() != "":
-                unidades = int(self.le_unidades.text())
-                print(f'Unidades: {unidades}')
-                capacidad = int(self.cmb_capacidad.currentText())
-                print(f'Capacidad: {capacidad}')
-                print(f'{capacidad}')
-                if capacidad > 500:
-                    tiempo_envasado = (unidades*60*2)/self.UNIDADES_CALCULO
-                else:
-                    tiempo_envasado = (unidades*60)/self.UNIDADES_CALCULO
-                print(f'Tiempo de envasado:{tiempo_envasado}')
-                return tiempo_envasado
+            unidades = self.mostrar_unidades()
+            print(f'Unidades:{unidades}')
+
+            if self.obtener_capacidad() > 500:
+                tiempo_envasado = (unidades*60*2)/self.UNIDADES_CALCULO
+            else:
+                tiempo_envasado = (unidades*60)/self.UNIDADES_CALCULO
+            print(f'Tiempo de envasado-calcular_env:{tiempo_envasado}')
+            return tiempo_envasado
         except Exception:
             ventana_faltan_datos = VentanaFaltanDatos()
             ventana_faltan_datos.exec()
@@ -541,14 +572,18 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
     def calcuclar_limpieza_env(self):
         # Tiempo de limpieza 60' por operario
         if self.le_operarios_env.text() != "":
-            operarios = int(self.le_operarios_env.text())
-            tiempo_limpieza_env = 60/operarios
-            return tiempo_limpieza_env
+            try:
+                operarios = int(self.le_operarios_env.text())
+                tiempo_limpieza_env = 60/operarios
+                return tiempo_limpieza_env
+            except ZeroDivisionError:
+                ventana_div_cero = VentanaDivisionCero()
+                ventana_div_cero.exec()
 
     def total_envasado(self):
         try:
             tiempo = (
-                # self.calcular_prep_env()
+                self.calcular_prep_env() +
                 self.calcular_env()
                 + self.calcuclar_limpieza_env()
 
@@ -669,8 +704,9 @@ class VentanaPrincipal(QMainWindow, Ui_MainWindow):
         except ValueError:
             print(f"Dentro del except")
             ventana_error = VentanaFaltanDatos()
-            ventana_error.show()
-            QtCore.QCoreApplication.processEvents()
+            ventana_error.exec()
+            # ventana_error.show()
+            # QtCore.QCoreApplication.processEvents()
             self.le_total_produccion.setText("")
 
     def guardar(self):
